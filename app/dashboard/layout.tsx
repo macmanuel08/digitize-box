@@ -1,4 +1,14 @@
 import SideNav from '@/app/ui/dashboard/sidenav';
+import { Metadata } from 'next';
+
+const metadata: Metadata = {
+    title: {
+        template: '%s | DigitizeBox',
+        default: 'DigitizeBox',
+    },
+    description: 'Features of the DigitizeBox Web App',
+    metadataBase: new URL('https://digitizebox.com'),
+};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
