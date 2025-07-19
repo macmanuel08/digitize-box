@@ -4,7 +4,7 @@ import { z } from 'zod';
 import postgres from 'postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-//import { signIn } from '@/auth';
+import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
@@ -114,7 +114,6 @@ export async function deleteInvoice(id: string) {
   revalidatePath('/dashboard/invoices');
 }
 
-/*
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData,
@@ -133,4 +132,3 @@ export async function authenticate(
     throw error;
   }
 }
-*/
