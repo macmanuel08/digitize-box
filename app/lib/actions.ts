@@ -6,6 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import App from 'next/app';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -130,5 +131,72 @@ export async function authenticate(
       }
     }
     throw error;
+  }
+}
+
+export type AppointmentState = {
+  errors?: {
+    firstName?: string[];
+    lastName?: string[];
+    email?: string[];
+    phone?: string[];
+    appointmentDate?: string[];
+    appointmentTime?: string[];
+  };
+  message?: string | null;
+};
+
+const AppointmentSchema = z.object({
+  firstName: z.string({
+    required_error: 'Please provide your first name.',
+  }),
+  lastName: z.string({
+    required_error: 'Please provide your last name.',
+  }),
+  email: z.string({
+    invalid_type_error: 'Please provide your email.',
+    required_error: 'Email is required.'
+  }).trim().email({
+    message: 'Please provide your email in the right format (e.g. example@digitizebox.com).'
+  }),
+  phone: z.string({
+    required_error: 'Phone is required.'
+  }),
+  appointmentDate: z.string({
+    required_error: 'Please select date.'
+  }),
+  appointmentTime: z.string(),
+});
+
+export async function createAppointment(
+  prevState: AppointmentState | undefined,
+  formData: FormData
+): Promise<AppointmentState | undefined> {
+  
+  const validatedFields = AppointmentSchema.safeParse({
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
+    email: formData.get('email'),
+    phone: formData.get('phone'),
+    appointmentDate: formData.get('appointmentDate'),
+    appointmentTime: formData.get('appointmentTime'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to make an appointment.',
+    };
+  }
+
+  const { firstName, lastName, email, phone, appointmentDate, appointmentTime } = validatedFields.data;
+
+  try {
+    await sql`
+      INSERT INTO appointments (first_name, last_name, email, phone, appointment_date, appointment_time)
+      VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${appointmentDate}, ${appointmentTime})`
+    ;
+  } catch(error) {
+    return {message: `Failed to insert appointment: ${error}`};
   }
 }
