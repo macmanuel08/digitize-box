@@ -1,7 +1,7 @@
 'use client';
 
 import { AppointmentForm } from '@/app/lib/definitions';
-import { UserCircleIcon, PhoneIcon, CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { UserCircleIcon, PhoneIcon, CalendarIcon, ClockIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
 import { createAppointment, AppointmentState } from '@/app/lib/actions';
 import { useActionState } from 'react';
@@ -27,6 +27,7 @@ export default function Form() {
               placeholder="First Name"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="firstname-error"
+              defaultValue={safeState.values?.firstName ?? ''}
             />
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>
@@ -50,6 +51,7 @@ export default function Form() {
               placeholder="Last Name"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="lastname-error"
+              defaultValue={safeState.values?.lastName ?? ''}
             />
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>
@@ -73,8 +75,9 @@ export default function Form() {
               placeholder="Email"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="email-error"
+              defaultValue={safeState.values?.email ?? ''}
             />
-            <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <EnvelopeIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>
           <div id="email-error" aria-live="polite">
             {safeState.errors?.email?.map((error) => (
@@ -96,6 +99,7 @@ export default function Form() {
               placeholder="Phone Number"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="phone-error"
+              defaultValue={safeState.values?.phone ?? ''}
             />
             <PhoneIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>
@@ -118,6 +122,7 @@ export default function Form() {
               type="date"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="appointmentDate-error"
+              defaultValue={safeState.values?.appointmentDate ?? ''}
             />
             <CalendarIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>
@@ -140,6 +145,7 @@ export default function Form() {
               type="time"
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               aria-describedby="appointmentTime-error"
+              defaultValue={safeState.values?.appointmentTime ?? ''}
             />
             <ClockIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
           </div>

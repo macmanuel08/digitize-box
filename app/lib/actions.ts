@@ -143,29 +143,47 @@ export type AppointmentState = {
     appointmentDate?: string[];
     appointmentTime?: string[];
   };
+  values?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    appointmentDate?: string;
+    appointmentTime?: string;
+  };
   message?: string | null;
 };
 
 const AppointmentSchema = z.object({
-  firstName: z.string({
-    required_error: 'Please provide your first name.',
-  }),
-  lastName: z.string({
-    required_error: 'Please provide your last name.',
-  }),
-  email: z.string({
-    invalid_type_error: 'Please provide your email.',
-    required_error: 'Email is required.'
-  }).trim().email({
-    message: 'Please provide your email in the right format (e.g. example@digitizebox.com).'
-  }),
-  phone: z.string({
-    required_error: 'Phone is required.'
-  }),
-  appointmentDate: z.string({
-    required_error: 'Please select date.'
-  }),
-  appointmentTime: z.string(),
+	firstName: z.string({
+		required_error: 'Please provide your first name.',
+	}).min(1, {
+		message: 'Please provide your first name.',
+	}),
+	lastName: z.string({
+		required_error: 'Please provide your last name.',
+	}).min(1, {
+		message: 'Please provide your last name.',
+	}),
+	email: z.string({
+		invalid_type_error: 'Please provide your email.',
+		required_error: 'Email is required.'
+	}).trim().email({
+		message: 'Please provide your email in the right format (e.g. example@digitizebox.com).'
+	}),
+	phone: z.string({
+		required_error: 'Phone is required.'
+	}).min(1, {
+		message: 'Please provide your phone number.',
+	}),
+	appointmentDate: z.string({
+		required_error: 'Please select date.'
+	}).min(1, {
+		message: 'Please select date.',
+	}),
+	appointmentTime: z.string().min(1, {
+		message: 'Please select time',
+	}),
 });
 
 export async function createAppointment(
@@ -173,18 +191,21 @@ export async function createAppointment(
   formData: FormData
 ): Promise<AppointmentState | undefined> {
   
-  const validatedFields = AppointmentSchema.safeParse({
-    firstName: formData.get('firstName'),
-    lastName: formData.get('lastName'),
-    email: formData.get('email'),
-    phone: formData.get('phone'),
-    appointmentDate: formData.get('appointmentDate'),
-    appointmentTime: formData.get('appointmentTime'),
-  });
+  const values = {
+    firstName: formData.get('firstName')?.toString() || '',
+    lastName: formData.get('lastName')?.toString() || '',
+    email: formData.get('email')?.toString() || '',
+    phone: formData.get('phone')?.toString() || '',
+    appointmentDate: formData.get('appointmentDate')?.toString() || '',
+    appointmentTime: formData.get('appointmentTime')?.toString() || '',
+  };
+
+  const validatedFields = AppointmentSchema.safeParse(values);
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+      values,
       message: 'Missing Fields. Failed to make an appointment.',
     };
   }
