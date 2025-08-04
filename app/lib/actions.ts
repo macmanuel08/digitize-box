@@ -6,7 +6,6 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
-import App from 'next/app';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -65,8 +64,9 @@ export async function createInvoice(prevState: State, formData: FormData) {
     `;
   } catch (error) {
     // If a database error occurs, return a more specific error.
+	console.log(customerId)
     return {
-      message: 'Database Error: Failed to Create Invoice.',
+      message: `Database Error: Failed to Create Invoice. ${error}`,
     };
   }
 
@@ -219,5 +219,22 @@ export async function createAppointment(
     ;
   } catch(error) {
     return {message: `Failed to insert appointment: ${error}`};
+  }
+
+  revalidatePath('/dashboard/appointment');
+  redirect('/dashboard/appointment');
+}
+
+export async function getTakenTimeslots(date: Date): Promise<string[] | null> {
+  try {
+    const results = await sql`
+      SELECT appointment_time FROM appointments WHERE appointment_date = ${date};
+    `;
+
+    const availableTimeslots = results.map(result => result.appointment_time);
+    return availableTimeslots;
+  } catch(error) {
+    console.log('reading time failed')
+    return null
   }
 }

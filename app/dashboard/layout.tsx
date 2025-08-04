@@ -1,5 +1,6 @@
 import SideNav from '@/app/ui/dashboard/sidenav';
 import { Metadata } from 'next';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const metadata: Metadata = {
     title: {

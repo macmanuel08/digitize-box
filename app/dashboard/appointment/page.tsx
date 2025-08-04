@@ -1,4 +1,4 @@
-import Form from '@/app/ui/appointment/craete-form';
+import Form from '@/app/ui/appointment/create-form';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
