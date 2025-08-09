@@ -1,6 +1,6 @@
 'use server';
 
-import { z } from 'zod';
+import { z, ZodObject } from 'zod';
 import postgres from 'postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -238,3 +238,37 @@ export async function getTakenTimeslots(date: Date): Promise<string[] | null> {
     return null
   }
 }
+
+const updateAppointmentsStatusSchema = z.object({
+  id: z.string(),
+  status: z.enum(['pending', 'confirmed', 'completed', 'canceled'])
+});
+
+type AppointmentType = {
+  id: string;
+  appointment_date: string;
+  appointment_time: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  status: 'pending' | 'confirmed' | 'completed' | 'canceled';
+};
+
+export async function getAppointments(): Promise<AppointmentType[]> {
+  const result = await sql<AppointmentType[]>`
+    SELECT id, appointment_date, appointment_time, first_name, last_name, email, phone, status
+    FROM appointments
+  `;
+  return result;
+}
+
+export async function updateAppointmentsStatus(data: unknown) {
+  const parsed = updateAppointmentsStatusSchema.parse(data);
+  return await sql`
+    UPDATE appointments
+    SET status = ${parsed.status}
+    WHERE id = ${parsed.id}
+  `;
+}
+
