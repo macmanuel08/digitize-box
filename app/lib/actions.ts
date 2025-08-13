@@ -218,11 +218,11 @@ export async function createAppointment(
       VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${appointmentDate}, ${appointmentTime})`
     ;
   } catch(error) {
-    return {message: `Failed to insert appointment: ${error}`};
+    return {message: `Failed to insert appointment`};
   }
 
-  revalidatePath('/dashboard/appointment');
-  redirect('/dashboard/appointment');
+  revalidatePath('/dashboard/appointment-success');
+  redirect('/dashboard/appointment/appointment-success');
 }
 
 export async function getTakenTimeslots(date: Date): Promise<string[] | null> {
