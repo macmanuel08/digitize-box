@@ -5,6 +5,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import Swal from 'sweetalert2';
+import { sendAppointmentEmail } from "@/app/lib/sendEmail";
 
 type AppointmentType = {
     id: string;
@@ -62,6 +63,9 @@ export default function AppointmentCalendarPage() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id, status })
         });
+        
+        await sendAppointmentEmail({userId: id, subject: 'DigitizeBox Appointment Status Update', status});
+
         await fetchAppointments();
     };
 
@@ -89,7 +93,7 @@ export default function AppointmentCalendarPage() {
                             completed: 'Completed',
                             canceled: 'Canceled'
                         },
-                        confirmButtonColor: '#19467a',
+                        confirmButtonColor: '#0047BA',
                         inputValue: info.event.extendedProps.status || 'pending',
                         showCancelButton: true,
                         confirmButtonText: 'Save',

@@ -272,3 +272,12 @@ export async function updateAppointmentsStatus(data: unknown) {
   `;
 }
 
+export async function getAppointmentInfoById(id: string) {
+  const info = await sql`
+    SELECT email, appointment_date
+    FROM appointments
+    WHERE id = ${id}
+  `;
+
+  return info[0];
+}
