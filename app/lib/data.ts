@@ -6,6 +6,7 @@ import {
   InvoicesTable,
   LatestInvoiceRaw,
   Revenue,
+  StoreGrid,
 } from './definitions';
 import { formatCurrency } from './utils';
 
@@ -214,5 +215,80 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
+  }
+}
+
+export async function fetchFilteredStore(
+  query: string,
+  currentPage: number,
+) {
+  const ITEMS_PER_PAGE = 5;
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const storeItems = await sql<StoreGrid[]>`
+      SELECT
+        id,
+        title,
+        author,
+        price,
+        stock_status,
+        image,
+        published_year
+      FROM store
+      WHERE
+        title ILIKE ${`%${query}%`} OR
+        author ILIKE ${`%${query}%`} OR
+        price::text ILIKE ${`%${query}%`} OR
+        stock_status ILIKE ${`%${query}%`} OR
+        category ILIKE ${`%${query}%`} OR
+        format ILIKE ${`%${query}%`} OR
+        published_year::text ILIKE ${`%${query}%`}
+      ORDER BY published_year DESC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return storeItems;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the store.');
+  }
+}
+
+export async function fetchStorePages(query: string) {
+  try {
+    const data = await sql`SELECT COUNT(*)
+    FROM store
+    WHERE
+      title ILIKE ${`%${query}%`} OR
+      author ILIKE ${`%${query}%`} OR
+      price::text ILIKE ${`%${query}%`} OR
+      stock_status ILIKE ${`%${query}%`} OR
+      category ILIKE ${`%${query}%`} OR
+      format ILIKE ${`%${query}%`} OR
+      published_year::text ILIKE ${`%${query}%`}
+  `;
+    const ITEMS_PER_PAGE = 5;
+    const totalPages = Math.ceil(Number(data[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of store items.');
+  }
+}
+
+export async function fetchStoreItemById(id: string) {
+  try {
+    const data = await sql<StoreGrid[]>`
+      SELECT
+        *
+      FROM store
+      WHERE id = ${id};
+    `;
+
+    return data[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch store.');
   }
 }

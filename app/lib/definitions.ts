@@ -95,3 +95,16 @@ export type AppointmentForm = {
   appointmentDate: string,
   appointmentTime: string
 }
+
+export type StoreGrid = {
+  id: string,
+  title: string,
+  author: string,
+  price: number,
+  stock_status: string,
+  image: string,
+  description?: string,
+  category?: string,
+  format?: string,
+  published_year?: number,
+}
