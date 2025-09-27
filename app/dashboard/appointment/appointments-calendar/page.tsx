@@ -6,6 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import Swal from 'sweetalert2';
 import { sendAppointmentEmail } from "@/app/lib/sendEmail";
+import { lusitana } from "@/app/ui/fonts";
 
 type AppointmentType = {
     id: string;
@@ -75,6 +76,12 @@ export default function AppointmentCalendarPage() {
 
     return (
         <div>
+            <h1 className={`${lusitana.className} text-2xl mb-4`}>Appointment Calendar</h1>
+            <p className="mb-12">
+                This page is a demonstration of the appointment scheduling feature, typically used by administrators and staff.
+                <br /><br />
+                For demo purposes, interact by clicking the appointment you scheduled using your email address. You can confirm, cancel, or mark it as completed to see how automated email notifications are sent.
+            </p>
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"

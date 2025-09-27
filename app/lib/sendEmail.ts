@@ -27,7 +27,7 @@ export async function sendAppointmentEmail({
             <div style="max-width:600px; margin:auto; background:white; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); overflow:hidden;">
             
             <!-- Header -->
-            <div style="background-color:#0047BA; color:white; padding:20px; text-align:center;">
+            <div style="background-color:#002e5d; color:white; padding:20px; text-align:center;">
                 <h1 style="margin:0; font-size:22px; font-weight:600;">Appointment Status Update</h1>
             </div>
             

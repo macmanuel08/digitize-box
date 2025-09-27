@@ -222,7 +222,7 @@ export async function createAppointment(
   }
 
   revalidatePath('/dashboard/appointment-success');
-  redirect('/dashboard/appointment/appointment-success');
+  redirect('/dashboard/appointment/appointments-calendar');
 }
 
 export async function getTakenTimeslots(date: Date): Promise<string[] | null> {
