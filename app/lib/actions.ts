@@ -6,6 +6,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import bcrypt from 'bcrypt';
+import { Result } from 'postcss';
+import { formatTimestamp } from '@/app/lib/utils';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -280,4 +283,253 @@ export async function getAppointmentInfoById(id: string) {
   `;
 
   return info[0];
+}
+
+export type UserState = {
+  errors?: {
+    firstName?: string[];
+    lastName?: string[];
+    email?: string[];
+    phone?: string[];
+    password?: string[];
+    role?: string[];
+    companyId?: string[];
+  };
+  values?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    password?: string;
+    role?: string;
+    companyId?: string;
+  };
+  message?: string | null;
+};
+
+const SignUpSchema = z.object({
+	firstName: z.string({
+		required_error: 'Please provide your first name.',
+	}).min(1, {
+		message: 'Please provide your first name.',
+	}),
+	lastName: z.string({
+		required_error: 'Please provide your last name.',
+	}).min(1, {
+		message: 'Please provide your last name.',
+	}),
+	email: z.string({
+		invalid_type_error: 'Please provide your email.',
+		required_error: 'Email is required.'
+	}).trim().email({
+		message: 'Please provide your email in the right format (e.g. example@digitizebox.com).'
+	}),
+	phone: z.string({
+    required_error: 'Phone is required.',
+  })
+  .min(1, { message: 'Please provide your phone number.' })
+  .regex(/^(?:\+639|09)\d{9}$/, {
+    message: 'Invalid Philippine phone number format. 09171234567 or +639171234567',
+  }),
+  password: z.string({
+    required_error: 'Password is required.',
+  })
+  .min(8, { message: 'Password must be at least 8 characters long.' })
+  .regex(/[A-Z]/, { message: 'Password must contain at least one uppercase letter.' })
+  .regex(/[a-z]/, { message: 'Password must contain at least one lowercase letter.' })
+  .regex(/[0-9]/, { message: 'Password must contain at least one number.' })
+  .regex(/[^A-Za-z0-9]/, { message: 'Password must contain at least one special character.' }),
+  role: z.enum(['doctor', 'admin', 'staff'], {
+    invalid_type_error: 'Please provide your role.',
+  }),
+  companyId: z.string(),
+});
+
+export async function createUser(
+  prevState: UserState | undefined,
+  formData: FormData
+): Promise<UserState | undefined> {
+  
+  const values = {
+    firstName: formData.get('firstName')?.toString() || '',
+    lastName: formData.get('lastName')?.toString() || '',
+    email: formData.get('email')?.toString() || '',
+    phone: formData.get('phone')?.toString() || '',
+    password: formData.get('password')?.toString() || '',
+    role: formData.get('role')?.toString() || '',
+    companyId: formData.get('companyId')?.toString() || '',
+  };
+
+  const validatedFields = SignUpSchema.safeParse(values);
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      values,
+      message: 'Missing Fields. Failed to create an account.',
+    };
+  }
+
+  const { firstName, lastName, email, phone, password, role, companyId } = validatedFields.data;
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    await sql`
+      INSERT INTO users (first_name, last_name, email, phone, password, role, company_id )
+      VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${hashedPassword}, ${role}, ${companyId})`
+    ;
+  } catch(error) {
+    return {message: `Failed to sign up`};
+  }
+
+  redirect(`/payment/${companyId}/`);
+}
+
+export type CompanyState = {
+  errors?: {
+    name?: string[];
+    industry?: string[];
+  };
+  values?: {
+    name?: string;
+    industry?: string;
+  };
+  message?: string | null;
+};
+
+const CompanySchema = z.object({
+	name: z.string({
+		required_error: "Please provide your company's name.",
+	}).min(1, {
+		message: "Please provide your company's name.",
+	}),
+	  industry: z.string({
+    required_error: 'Please specify your industry (e.g. dental, optometry, veterinary, etc.)'
+  }),
+});
+
+export async function createCompany(
+  prevState: CompanyState| undefined,
+  formData: FormData
+): Promise<CompanyState | undefined> {
+
+  const values = {
+    name: formData.get('name')?.toString() || '',
+    industry: formData.get('industry')?.toString() || '',
+  }
+
+  const validatedFields = CompanySchema.safeParse(values);
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      values,
+      message: 'Missing Fields. Failed to register the company.',
+    };
+  }
+
+  const { name, industry } = validatedFields.data;
+
+  let result;
+
+  try{
+      result = await sql`
+      INSERT INTO companies (name, industry)
+      VALUES (${name}, ${industry})
+      RETURNING id
+    `;
+  } catch (error) {
+    return {message: `Failed to register the company`};
+  }
+  
+  const id = result[0].id;
+  redirect(`/signup/${id}/personal-info`);
+}
+
+export type PaymentState = {
+  errors?: {
+    company_id?: string[];
+
+    //payments
+    payment_reference_id?: string[];
+    amount?: string[];
+    method?: string[];
+  };
+  values?: {
+    company_id?: string;
+
+    //payments
+    payment_reference_id?: string;
+    amount?: string;
+    method?: string;
+  };
+  message?: string | null;
+};
+
+const PaymentSchema = z.object({
+  company_id: z.string(),
+	payment_reference_id: z.string({
+		required_error: "Please provide reference/transaction number of your payment (see example screenshot).",
+	}).min(1, {
+		message: "Please provide reference/transaction number of your payment (see example screenshot).",
+	}),
+	amount: z.coerce
+    .number()
+    .gt(0, { message: 'Please enter an amount greater than ₱0.' }),
+  method: z.string({
+    required_error: "Please proveide your payment method (e.g. GCash, Maya, Bank Transfer)."
+  })
+});
+
+export async function createPayment(
+  prevState: PaymentState| undefined,
+  formData: FormData
+): Promise<PaymentState | undefined> {
+
+  const values = {
+    company_id: formData.get('company_id')?.toString() || '',
+    payment_reference_id: formData.get('payment_reference_id')?.toString() || '',
+    amount: formData.get('amount')?.toString(),
+    method: formData.get('method')?.toString() || '',
+  }
+
+  const validatedFields = PaymentSchema.safeParse(values);
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      values,
+      message: 'Missing Fields. Failed to make a payment.',
+    };
+  }
+
+  const { company_id, payment_reference_id, amount, method } = validatedFields.data;
+
+  const amountInCents: number = Number(amount) * 100;
+
+  let today = new Date();
+  today.setDate(today.getDate() + 30);
+
+  const endDate = formatTimestamp(today);
+
+  try{
+    const result = await sql`
+      INSERT INTO subscriptions (end_date, next_billing_date, company_id)
+      VALUES (${endDate}, ${endDate}, ${company_id})
+      RETURNING id
+    `;
+
+    const subscription_id: string = result[0].id;
+
+    await sql`
+      INSERT INTO payments (subscription_id, payment_reference_id, amount, method)
+      VALUES (${subscription_id}, ${payment_reference_id}, ${amountInCents}, ${method})
+    `;
+  } catch (error) {
+    console.log(error);
+    return {message: `Failed to make a payment`};
+  }
+  
+  redirect('/payment/thanks');
 }
