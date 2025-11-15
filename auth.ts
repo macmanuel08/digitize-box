@@ -42,4 +42,18 @@ export const { auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+
+  callbacks: {
+    authorized: authConfig.callbacks?.authorized,
+
+    async jwt({ token, user }) {
+      if (user) token.company_id = user.company_id;
+      return token;
+    },
+
+    async session({ session, token }) {
+      session.user.company_id = token.company_id as string; // can cause bug
+      return session;
+    },
+  }
 });
