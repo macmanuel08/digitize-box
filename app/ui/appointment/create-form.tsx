@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import clsx from 'clsx';
 
-export default function Form() {
+export default function Form({companyId}: {companyId: string}) {
 	const initialState: AppointmentState = { errors: {}, message: null, };
 	const [state, formAction] = useActionState(createAppointment, initialState);
 	const safeState = state ?? initialState;
@@ -178,6 +178,8 @@ export default function Form() {
 				<div aria-live="polite" aria-atomic="true">
 				{safeState.message && <p className="mt-2 text-sm text-red-500">{safeState.message}</p>}
 				</div>
+
+				<input type="hidden" name="companyId" value={companyId} />
 
 				<div className="mt-6">
 				<Button type="submit">Make Appointment</Button>

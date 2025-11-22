@@ -145,6 +145,7 @@ export type AppointmentState = {
     phone?: string[];
     appointmentDate?: string[];
     appointmentTime?: string[];
+    companyId?: string[];
   };
   values?: {
     firstName?: string;
@@ -153,6 +154,7 @@ export type AppointmentState = {
     phone?: string;
     appointmentDate?: string;
     appointmentTime?: string;
+    companyId?: string;
   };
   message?: string | null;
 };
@@ -187,6 +189,7 @@ const AppointmentSchema = z.object({
 	appointmentTime: z.string().min(1, {
 		message: 'Please select time',
 	}),
+  companyId: z.string(),
 });
 
 export async function createAppointment(
@@ -201,6 +204,7 @@ export async function createAppointment(
     phone: formData.get('phone')?.toString() || '',
     appointmentDate: formData.get('appointmentDate')?.toString() || '',
     appointmentTime: formData.get('appointmentTime')?.toString() || '',
+    companyId: formData.get('companyId')?.toString(),
   };
 
   const validatedFields = AppointmentSchema.safeParse(values);
@@ -213,12 +217,12 @@ export async function createAppointment(
     };
   }
 
-  const { firstName, lastName, email, phone, appointmentDate, appointmentTime } = validatedFields.data;
+  const { firstName, lastName, email, phone, appointmentDate, appointmentTime, companyId } = validatedFields.data;
 
   try {
     await sql`
-      INSERT INTO appointments (first_name, last_name, email, phone, appointment_date, appointment_time)
-      VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${appointmentDate}, ${appointmentTime})`
+      INSERT INTO appointments (first_name, last_name, email, phone, appointment_date, appointment_time, company_id)
+      VALUES (${firstName}, ${lastName}, ${email}, ${phone}, ${appointmentDate}, ${appointmentTime}, ${companyId})`
     ;
   } catch(error) {
     return {message: `Failed to insert appointment`};

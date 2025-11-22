@@ -292,3 +292,20 @@ export async function fetchStoreItemById(id: string) {
     throw new Error('Failed to fetch store.');
   }
 }
+
+export async function fetchBusinessBySlug(slug: string) {
+  try {
+    const data = await sql`
+      SELECT
+        id,
+        name
+      FROM companies c
+      WHERE c.company_slug = ${slug};
+    `;
+
+    return data;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch company.');
+  }
+}

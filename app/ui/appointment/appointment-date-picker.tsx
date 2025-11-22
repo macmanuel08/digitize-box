@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { parseISO, isWeekend, format } from 'date-fns';
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function AppointmentDatePicker({
   defaultValue,
