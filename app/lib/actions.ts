@@ -262,10 +262,11 @@ type AppointmentType = {
   status: 'pending' | 'confirmed' | 'completed' | 'canceled';
 };
 
-export async function getAppointments(): Promise<AppointmentType[]> {
+export async function getAppointments(companyId: string | null): Promise<AppointmentType[]> {
   const result = await sql<AppointmentType[]>`
     SELECT id, appointment_date, appointment_time, first_name, last_name, email, phone, status
     FROM appointments
+    WHERE company_id = ${companyId}
   `;
   return result;
 }

@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getAppointments, updateAppointmentsStatus } from '@/app/lib/actions';
 
-export async function GET() {
-  const appointments = await getAppointments();
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get('id');
+
+  const appointments = await getAppointments(id);
   return NextResponse.json(appointments);
 }
 
