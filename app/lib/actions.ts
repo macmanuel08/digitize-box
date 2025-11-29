@@ -394,10 +394,12 @@ export type CompanyState = {
   errors?: {
     name?: string[];
     industry?: string[];
+    slug?: string[];
   };
   values?: {
     name?: string;
     industry?: string;
+    slug?: string;
   };
   message?: string | null;
 };
@@ -411,6 +413,7 @@ const CompanySchema = z.object({
 	  industry: z.string({
     required_error: 'Please specify your industry (e.g. dental, optometry, veterinary, etc.)'
   }),
+    slug: z.string()
 });
 
 export async function createCompany(
@@ -421,6 +424,7 @@ export async function createCompany(
   const values = {
     name: formData.get('name')?.toString() || '',
     industry: formData.get('industry')?.toString() || '',
+    slug: formData.get('slug')?.toString() || '',
   }
 
   const validatedFields = CompanySchema.safeParse(values);
@@ -433,17 +437,18 @@ export async function createCompany(
     };
   }
 
-  const { name, industry } = validatedFields.data;
+  const { name, industry, slug } = validatedFields.data;
 
   let result;
 
   try{
       result = await sql`
-      INSERT INTO companies (name, industry)
-      VALUES (${name}, ${industry})
+      INSERT INTO companies (name, industry, company_slug)
+      VALUES (${name}, ${industry}, ${slug})
       RETURNING id
     `;
   } catch (error) {
+  console.log(error)
     return {message: `Failed to register the company`};
   }
   

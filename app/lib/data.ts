@@ -309,3 +309,17 @@ export async function fetchBusinessBySlug(slug: string) {
     throw new Error('Failed to fetch company.');
   }
 }
+
+export async function nonExistingSlug(slug: string): Promise<boolean> {
+  try {
+    const notExistingSlug = await sql`
+      SELECT name
+      FROM companies
+      WHERE company_slug = ${slug};
+    `;
+    return notExistingSlug.length == 0;
+  } catch(error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to validate company slug.');
+  }
+}

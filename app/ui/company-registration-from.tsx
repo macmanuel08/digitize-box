@@ -7,14 +7,51 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from '@/app/ui/button';
-import { useActionState } from 'react';
+import { useActionState, useState, useEffect } from 'react';
 import { createCompany, CompanyState } from '@/app/lib/actions';
+import { useDebouncedCallback } from 'use-debounce';
 
 export default function CompanyRegistrationForm() {
 
     const initialState: CompanyState = { errors: {}, message: null, };
     const [state, formAction] = useActionState(createCompany, initialState);
     const safeState = state ?? initialState;
+    const [companyName, setCompanyName] = useState('');
+    const [slug, setSlug] = useState('');
+    const [slugExists, setSlugExists] = useState<boolean | null>(null);
+    
+    
+    const debouncedCheckSlugExistence = useDebouncedCallback(async (slug: string) => {
+        try {
+            const response = await fetch(`/api/check-slug?slug=${slug}`);
+            const data = await response.json();
+
+        if (response.ok) {
+            setSlugExists(data.exists);
+        } else {
+            console.error('Something went wrong. Check slug');
+        }
+        } catch (error) {
+            console.error('Error checking slug existence: ', error);
+        }
+    }, 500);
+
+  useEffect(() => {
+    const generateSlug = (name: string) => {
+      return name.toLowerCase().replace(/[^a-z0-9]+/g, '');
+    };
+
+        if (companyName) {
+            const generatedSlug = generateSlug(companyName);
+            setSlug(generatedSlug);
+            debouncedCheckSlugExistence(generatedSlug);
+        }
+        
+    }, [companyName]);
+
+    const handleCompanyNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCompanyName(e.target.value);
+    }
 
     return (
         <form action={formAction} className="space-y-3">
@@ -39,9 +76,12 @@ export default function CompanyRegistrationForm() {
                     name="name"
                     placeholder="Enter your business/company name"
                     required
+                    onChange={handleCompanyNameChange}
+                    value={companyName}
                 />
                 <UserGroupIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
                 </div>
+                {slugExists && <p className="mt-2 text-sm text-red-500">Business name has taken. Please enter another business name</p>}
             </div> 
 
             <div className='mt-4'>
@@ -65,8 +105,10 @@ export default function CompanyRegistrationForm() {
             </div>
             </div>
 
-            <Button className="mt-4 w-full">
-            Register <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+            <input type="hidden" name="slug" value={slug} />
+
+            <Button className="mt-4 w-full" disabled={slugExists ? true : false}>
+                Register <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
             </Button>
             <div
             className="flex h-8 items-end space-x-1"
