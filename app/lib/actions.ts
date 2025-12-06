@@ -391,6 +391,27 @@ export async function createUser(
   redirect(`/payment/${companyId}/`);
 }
 
+const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+
+const dailyHours = z
+  .object({
+    start: z.string().optional(),
+    end: z.string().optional(),
+  })
+  .optional();
+
+const zodHours = z
+  .object(
+    days.reduce(
+      (shape, day) => ({
+        ...shape,
+        [day]: dailyHours,
+      }),
+      {} as Record<string, typeof dailyHours>
+    )
+  ).optional();
+
+
 export type CompanyState = {
   errors?: {
     name?: string[];
@@ -414,7 +435,8 @@ const CompanySchema = z.object({
 	  industry: z.string({
     required_error: 'Please specify your industry (e.g. dental, optometry, veterinary, etc.)'
   }),
-    slug: z.string()
+    slug: z.string(),
+    hours: zodHours,
 });
 
 export async function createCompany(
@@ -422,10 +444,19 @@ export async function createCompany(
   formData: FormData
 ): Promise<CompanyState | undefined> {
 
+  const availabilityBlocks = days.reduce((acc, day) => {
+    acc[day] = {
+      start: formData.get(`${day}_start`)?.toString() || '',
+      end: formData.get(`${day}_end`)?.toString() || '',
+    };
+    return acc;
+  }, {} as Record<string, { start: string; end: string }>);
+
   const values = {
     name: formData.get('name')?.toString() || '',
     industry: formData.get('industry')?.toString() || '',
     slug: formData.get('slug')?.toString() || '',
+    hours: availabilityBlocks,
   }
 
   const validatedFields = CompanySchema.safeParse(values);
@@ -438,18 +469,44 @@ export async function createCompany(
     };
   }
 
-  const { name, industry, slug } = validatedFields.data;
+  const { name, industry, slug, hours } = validatedFields.data;
+
 
   let result;
 
   try{
-      result = await sql`
+    result = await sql`
       INSERT INTO companies (name, industry, company_slug)
       VALUES (${name}, ${industry}, ${slug})
       RETURNING id
     `;
+
+    const companyId = result[0].id;
+
+    const dayMap: Record<string, number> = {
+      sunday: 0,
+      monday: 1,
+      tuesday: 2,
+      wednesday: 3,
+      thursday: 4,
+      friday: 5,
+      saturday: 6,
+    };
+
+    if (hours) {
+  for (const [day, times] of Object.entries(hours)) {
+    const { start, end } = times || {};
+
+      if (!start && !end) continue;
+
+      await sql`
+        INSERT INTO companies_availability_blocks (company_id, day_of_week, start_time, end_time)
+        VALUES (${companyId}, ${dayMap[day]}, ${start || null}, ${end || null})
+      `;
+    }
+  }
   } catch (error) {
-  console.log(error)
+    console.log(error)
     return {message: `Failed to register the company`};
   }
   

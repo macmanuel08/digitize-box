@@ -53,6 +53,8 @@ export default function CompanyRegistrationForm() {
         setCompanyName(e.target.value);
     }
 
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
     return (
         <form action={formAction} className="space-y-3">
         <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
@@ -103,11 +105,49 @@ export default function CompanyRegistrationForm() {
                 <BuildingStorefrontIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
                 </div>
             </div>
+
+            {/* Operation Hours */}
+            <h3 className={`${lusitana.className} mt-16 mb-3 text-lg`}>Enter Your Operation Hours Below:</h3>
+            <div className="grid grid-cols-1 gap-6">
+
+            <div key="heading" className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+                <div className='col-start-2 col-end-4 text-xs font-medium text-gray-900'>Opening Hour</div>
+                <div className='col-span-2 text-xs font-medium text-gray-900'>Closing Hour</div>
+            </div>
+            {days.map((day) => (
+                <div key={day} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+                <label
+                    className="mb-1 block text-xs font-medium text-gray-900"
+                    htmlFor={`${day.toLowerCase()}_start`}
+                >
+                    {day}
+                </label>
+
+                <input
+                    className="col-start-2 col-end-4 peer block w-full rounded-md border border-gray-200 py-[9px] pl-4 text-sm outline-2 placeholder:text-gray-500"
+                    id={`${day.toLowerCase()}_start`}
+                    type="time"
+                    name={`${day.toLowerCase()}_start`}
+                    placeholder="Start"
+                />
+
+                <input
+                    className="col-span-2 peer block w-full rounded-md border border-gray-200 py-[9px] pl-4 text-sm outline-2 placeholder:text-gray-500"
+                    id={`${day.toLowerCase()}_end`}
+                    type="time"
+                    name={`${day.toLowerCase()}_end`}
+                    placeholder="End"
+                />
+                </div>
+            ))}
+            </div>
+
+
             </div>
 
             <input type="hidden" name="slug" value={slug} />
 
-            <Button className="mt-4 w-full" disabled={slugExists ? true : false}>
+            <Button className="mt-16 w-full" disabled={slugExists ? true : false}>
                 Register <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
             </Button>
             <div

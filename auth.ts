@@ -47,12 +47,24 @@ export const { auth, signIn, signOut } = NextAuth({
     authorized: authConfig.callbacks?.authorized,
 
     async jwt({ token, user }) {
-      if (user) token.company_id = user.company_id;
+      if (user) {
+        token.company_id = user.company_id;
+        token.first_name = user.first_name;
+        token.last_name = user.last_name;
+        token.email = user.email;
+        token.role = user.role;
+        token.phone = user.phone;
+      }
       return token;
     },
 
     async session({ session, token }) {
-      session.user.company_id = token.company_id as string; // can cause bug
+      session.user.company_id = token.company_id as string; // type can cause bug
+      session.user.first_name = token.first_name as string;
+      session.user.last_name = token.last_name as string;
+      session.user.email = token.email as string;
+      session.user.role = token.role as string;
+      session.user.phone = token.phone as string;
       return session;
     },
   }
