@@ -323,3 +323,17 @@ export async function nonExistingSlug(slug: string): Promise<boolean> {
     throw new Error('Failed to validate company slug.');
   }
 }
+
+export async function fetchTimeslotsById(id: string) {
+  try {
+    const timeSlots = await sql`
+      SELECT day_of_week, start_time, end_time
+      FROM companies_availability_blocks
+      WHERE company_id = ${id}
+    `;
+    return timeSlots;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch timeslots.');
+  }
+}

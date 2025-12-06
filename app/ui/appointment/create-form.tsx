@@ -166,7 +166,7 @@ export default function Form({companyId}: {companyId: string}) {
 					<ClockIcon className="inline-block pointer-events-none h-5 w-5 text-gray-500 peer-focus:text-gray-900" /> Select Appointment Time. If your desired time doesn't show, please try another date.
 				</label>
 				<div className="relative">
-					<AppointmentTimePicker takenTimeslots={timeslots} />
+					<AppointmentTimePicker id={companyId} selectedDate={selectedDate} takenTimeslots={timeslots} />
 				</div>
 				<div id="appointmentTime-error" aria-live="polite">
 					{safeState.errors?.appointmentTime?.map((error) => (
