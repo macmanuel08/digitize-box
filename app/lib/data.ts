@@ -337,3 +337,18 @@ export async function fetchTimeslotsById(id: string) {
     throw new Error('Failed to fetch timeslots.');
   }
 }
+
+export async function fetchCompanyAvailability(id: string) {
+  try {
+    const availabilities = await sql`
+      SELECT day_of_week
+      FROM companies_availability_blocks
+      WHERE company_id = ${id}
+    `;
+
+    return availabilities;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch company availability days.');
+  }
+}

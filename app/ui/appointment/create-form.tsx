@@ -12,12 +12,29 @@ import { format } from 'date-fns';
 import clsx from 'clsx';
 
 export default function Form({companyId}: {companyId: string}) {
+	interface Day {day_of_week: number;}
 	const initialState: AppointmentState = { errors: {}, message: null, };
 	const [state, formAction] = useActionState(createAppointment, initialState);
 	const safeState = state ?? initialState;
 	const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 	const [timeslotsDisplay, setTimeslotsDisplay] = useState<boolean>(false);
 	const [timeslots, setTimeslots] = useState<string[]>([]);
+
+	const [availabilities, setAvailabilities] = useState<number[]>([]);
+
+	useEffect(() => {
+		const fetchCompanyAvailabilities = async () => {
+			const res = await fetch(`/api/appointments?id=${companyId}&availability=${true}`, {
+				method: 'GET',
+			});
+
+			const data: Day[] = await res.json();
+			const availabileDays = data.map((day: Day) => day.day_of_week);
+			setAvailabilities(availabileDays);
+		}
+
+		fetchCompanyAvailabilities()
+	}, []);
 
 	useEffect(() => {
 		const fetchTimeslots = async () => {
@@ -142,6 +159,7 @@ export default function Form({companyId}: {companyId: string}) {
 					Appointment Date
 				</label>
 				<AppointmentDatePicker
+					availabilities={availabilities}
 					defaultValue={safeState.values?.appointmentDate}
 					onChange={(date) =>{
 						if (date != null) setSelectedDate(date);

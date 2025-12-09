@@ -9,13 +9,21 @@ import "react-datepicker/dist/react-datepicker.css";
 export default function AppointmentDatePicker({
   defaultValue,
   onChange,
+  availabilities,
 }: {
   defaultValue?: string;
   onChange?: (date: Date | null) => void;
+  availabilities: number[],
 }) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     defaultValue ? parseISO(defaultValue) : null
   );
+
+  const isDateAvailable = (date: Date) => {
+    const dayOfWeek = date.getDay();
+    return availabilities.includes(dayOfWeek);
+  };
+
 
   useEffect(() => {
     const input = document.getElementById('appointmentDate') as HTMLInputElement;
@@ -32,7 +40,7 @@ export default function AppointmentDatePicker({
 			setSelectedDate(date);
 			if (onChange) onChange(date);
 		}}
-        filterDate={(date) => !isWeekend(date)}
+        filterDate={isDateAvailable}
         minDate={new Date()}
         placeholderText="Select a date"
         className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
