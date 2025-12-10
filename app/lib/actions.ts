@@ -282,9 +282,13 @@ export async function updateAppointmentsStatus(data: unknown) {
 
 export async function getAppointmentInfoById(id: string) {
   const info = await sql`
-    SELECT email, appointment_date
-    FROM appointments
-    WHERE id = ${id}
+    SELECT a.first_name as patient_first_name, a.last_name as patient_last_name, a.email as patient_email, a.appointment_date, a.appointment_time, c.name as business_name, u.phone, u.email as admin_email, u.phone as admin_phone
+    FROM appointments a
+    INNER JOIN companies c
+    ON a.company_id = c.id
+    INNER JOIN users u
+    ON c.id = u.company_id
+    WHERE a.id = ${id}
   `;
 
   return info[0];

@@ -65,7 +65,7 @@ export default function AppointmentCalendar({companyId}: {companyId: string}) {
             body: JSON.stringify({ id, status })
         });
         
-        await sendAppointmentEmail({userId: id, subject: 'DigitizeBox Appointment Status Update', status});
+        await sendAppointmentEmail({userId: id, status});
 
         await fetchAppointments();
     };

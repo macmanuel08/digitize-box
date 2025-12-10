@@ -352,3 +352,15 @@ export async function fetchCompanyAvailability(id: string) {
     throw new Error('Failed to fetch company availability days.');
   }
 }
+
+export function formatTo12Hour(timeString: string) {
+  const [hours, minutes] = timeString.split(":");
+
+  const date = new Date();
+  date.setHours(Number(hours), Number(minutes));
+
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: undefined,
+  });
+}
