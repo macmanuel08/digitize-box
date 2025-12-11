@@ -23,6 +23,8 @@ type CalendarEvent = {
     title: string;
     start: string;
     backgroundColor: string;
+    email: string;
+    phone: string;
 };
 
 export default function AppointmentCalendar({companyId}: {companyId: string}) {
@@ -38,7 +40,7 @@ export default function AppointmentCalendar({companyId}: {companyId: string}) {
 
             let timePart = appointment.appointment_time;
             if (/^\d{2}:\d{2}$/.test(timePart)) {
-            timePart += ':00';
+                timePart += ':00';
             }
 
             const backgroundColor =
@@ -51,6 +53,8 @@ export default function AppointmentCalendar({companyId}: {companyId: string}) {
                 id: appointment.id,
                 title: `${appointment.first_name} ${appointment.last_name}`,
                 start: `${datePart}T${timePart}`,
+                email: appointment.email,
+                phone: appointment.phone,
                 backgroundColor,
             };
         });
@@ -84,10 +88,16 @@ export default function AppointmentCalendar({companyId}: {companyId: string}) {
                 height="auto"
                 eventClick={async (info) => {
                     info.jsEvent.preventDefault();
+                    
+                    const text = `<ul>
+                        <li><span class="font-semibold">Phone:</span> ${info.event.extendedProps.phone}</li>
+                        <li><span class="font-semibold">Email:</span> ${info.event.extendedProps.email}</li>
+                    </ul>`;
 
                     const { value: newStatus } = await Swal.fire({
                         title: 'Update Appointment Status',
                         input: 'select',
+                        html: text,
                         inputOptions: {
                             pending: 'Pending',
                             confirmed: 'Confirmed',
