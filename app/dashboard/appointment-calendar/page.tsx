@@ -4,7 +4,6 @@ import AppointmentCalendar from "@/app/ui/appointment/appointment-calendar";
 
 export default async function AppointmentCalendarPage() {
     const session = await auth();
-    console.log(session?.user.company_id);
     const companyId = session?.user.company_id ?? '';
 
     return (
