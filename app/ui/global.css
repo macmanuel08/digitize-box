@@ -20,3 +20,15 @@ input[type='number']::-webkit-outer-spin-button {
 .fc-event {
     cursor: pointer;
 }
+
+/* h1.main-heading {
+  background-image: url();
+  background-clip: text;
+  color: transparent;
+  animation: bg-animation 30s linear infinite alternate;
+}
+
+@keyframes bg-animation {
+  0% {background-position: 0% 0%;}
+  100% {background-position: 100% 100%;}
+} */

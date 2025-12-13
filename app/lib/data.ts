@@ -310,6 +310,42 @@ export async function fetchBusinessBySlug(slug: string) {
   }
 }
 
+export async function fetchBusinessById(id: string) {
+  try {
+    const data = await sql`
+      SELECT
+        c.name,
+        c.industry,
+        s.next_billing_date,
+        json_agg(
+          jsonb_build_object(
+            'day_of_week', a.day_of_week,
+            'start_time', a.start_time,
+            'end_time', a.end_time
+          )
+          ORDER BY a.day_of_week, a.start_time
+        ) AS availability
+      FROM companies c
+      JOIN subscriptions s ON c.id = s.company_id
+      JOIN (
+        SELECT DISTINCT
+          company_id,
+          day_of_week,
+          start_time,
+          end_time
+        FROM companies_availability_blocks
+      ) a ON a.company_id = c.id
+      WHERE c.id = ${id}
+      GROUP BY c.name, c.industry, s.next_billing_date;
+    `;
+
+    return data[0] ?? null;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch company.');
+  }
+}
+
 export async function nonExistingSlug(slug: string): Promise<boolean> {
   try {
     const notExistingSlug = await sql`
@@ -362,5 +398,14 @@ export function formatTo12Hour(timeString: string) {
   return date.toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: undefined,
+  });
+}
+
+export function formatDate(dateString: Date) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 }
