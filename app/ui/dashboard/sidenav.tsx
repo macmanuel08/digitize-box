@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import NavLinks from '@/app/ui/dashboard/nav-links';
 import AcmeLogo from '@/app/ui/digitizebox-logo';
+import DigitizeBoxLogoLetter from '@/app/ui/digitizebox-logo-letters';
 import { PowerIcon } from '@heroicons/react/24/outline';
 import { signOut } from '@/auth';
 
@@ -12,7 +13,12 @@ export default function SideNav() {
         href="/"
       >
         <div className="w-32 text-white md:w-56">
-          <AcmeLogo />
+          <div className="p-2 w-full border-2 border-solid border-white">
+            <div className="w-12 ml-auto">
+              <DigitizeBoxLogoLetter color="white" />
+            </div>
+          </div>
+          <div className="text-center tracking-widest">DigitizeBox</div>
         </div>
       </Link>
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">

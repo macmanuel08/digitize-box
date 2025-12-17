@@ -18,6 +18,10 @@ const config: Config = {
           600: '#002E5D',
         },
       },
+      borderRadius: {
+        'd': '0% 30% 30% 0% / 0% 30% 30% 0%',
+        'b-part': '0% 20% 20% 0% / 0% 30% 30% 0%'
+      },
     },
     keyframes: {
       shimmer: {
