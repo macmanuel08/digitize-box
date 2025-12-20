@@ -22,29 +22,29 @@ export default function PaymentForm(
     return (
         <form action={formAction} className="space-y-3">
         <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
-            <h2 className={`${lusitana.className} mb-3 text-xl`}>
+            <h2 className={`${lusitana.className} mb-1 text-xl`}>
             Beta Mode Subscription
             </h2>
-            <p className='text-sm text-gray-600'>Get full access for only <span className="text-blue-500 font-semibold">&#8369;599</span> during our <strong>Beta Mode</strong>! Be among the first to experience our platform
+            <p className='text-sm text-gray-600'>Get full access for only <span className="text-blue-500 font-semibold">&#8369;399 per month</span> during our <strong>Beta Mode</strong>! Be among the first to experience our platform
     while we fine-tune and expand its features.</p>
 
             <p className='text-sm text-gray-600 mt-4'>As a Beta subscriber, your price will stay the same — forever — even as we grow, 
-    add new tools, and improve your experience.</p>
+    add new tools, and improve your experience. This exclusive offer is available to the first 20 subscribers only—don't miss out!</p>
 
             <p className="text-xs text-gray-600 mt-4">
   *Beta Mode means the app is in its early release stage — expect updates and exclusive early access perks.</p>
 
-            <h3 className={`${lusitana.className} my-4 text-lg`}>Payment Instructions</h3>
+            <h3 className={`${lusitana.className} mt-6 mb-1 text-lg`}>Payment Instructions</h3>
             <p className='text-sm text-gray-600'>
-                We currently accept <strong>GCash payments only</strong>. Please scan the QR code or use the payment information provided below to complete your subscription.
+                We currently accept <strong>InstaPay payments only</strong>. You can use your banking apps or e-wallet that has InstaPay payment method such as GCash, Maya (PayMaya), BDO Pay, and more. Please scan the QR code or use the payment information provided below to complete your subscription.
             </p>
 
             <div className="my-12">
-                <Image src="/gcash.png" alt="" width={356} height={646} className="w-[200px] mx-auto" />
+                <Image src="/instapay.png" alt="" width={356} height={646} className="w-[350px] mx-auto" />
             </div>
 
             <p className='text-sm text-gray-600'>
-                After payment, please provide your <strong>GCash reference number</strong> and the <strong>amount you paid</strong> below. We will activate your subscription after our team confirm your payment. Our team will reach out through email about your subscription.
+                After payment, please provide your <strong>reference number</strong> and the <strong>amount you paid</strong> below. We will activate your subscription after our team confirm your payment. Our team will reach out through email about your subscription.
             </p>
         
             <div className="w-full">
