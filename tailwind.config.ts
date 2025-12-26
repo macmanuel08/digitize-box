@@ -22,6 +22,10 @@ const config: Config = {
         'd': '0% 30% 30% 0% / 0% 30% 30% 0%',
         'b-part': '0% 20% 20% 0% / 0% 30% 30% 0%'
       },
+      fontFamily: {
+        heading: ['var(--font-montserrat)', 'sans-serif'],
+        body: ['var(--font-roboto)', 'sans-serif'],
+      }
     },
     keyframes: {
       shimmer: {

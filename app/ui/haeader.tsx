@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Header() {
     return (
-        <div className="bg-blue-600 py-4 lg:px-16 px-4 flex justify-between items-center">
+        <div className="font-body bg-blue-600 py-4 lg:px-16 px-4 flex justify-between items-center">
             <Link href="/">
                 <div className="w-32 text-white md:w-56">
                     <div className="p-2 w-full border-2 border-solid border-white">
@@ -16,7 +16,7 @@ export default function Header() {
             </Link>
             <div className="flex items-center gap-2 w-fit">
                 <Link className="btn btn-primary" href="/signup/company-info">Get Started</Link>
-                <Link className="btn btn-primary-transparent" href="/login">Log In</Link>
+                <Link className="btn btn-white-transparent" href="/login">Log In</Link>
             </div>
         </div>
     )
