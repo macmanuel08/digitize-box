@@ -9,11 +9,16 @@ export default async function AppointmentCalendarPage() {
     return (
         <div>
             <h1 className={`${lusitana.className} text-2xl mb-4`}>Appointment Calendar</h1>
-            <p className="mb-12">
-                This page is a demonstration of the appointment scheduling feature, typically used by administrators and staff.
-                <br /><br />
-                For demo purposes, interact by clicking the appointment you scheduled using your email address. You can confirm, cancel, or mark it as completed to see how automated email notifications are sent.
+            <h2 className={`${lusitana.className} text-xl mb-4`}>Doctor/Admin's Calendar Dashboard</h2>
+            <p className="mb-4">
+                Legends below show the status of each appointment. Interact by clicking each scheduled appointment. You can confirm, cancel, or mark it as completed.When an appointment is canceled or corfirmed, an automated email will be sent to notify the patient.
             </p>
+            <div className="legends mb-12 text-gray-600 text-sm">
+                <div className="flex items-center gap-1"><div className="w-3 h-3 bg-[#f2a900]"></div>Pending</div>
+                <div className="flex items-center gap-1"><div className="w-3 h-3 bg-[#19467a]"></div>Confirmed</div>
+                <div className="flex items-center gap-1"><div className="w-3 h-3 bg-[#ff0f0f]"></div>Canceled</div>
+                <div className="flex items-center gap-1"><div className="w-3 h-3 bg-[#22c55e]"></div>Completed</div>
+            </div>
             <AppointmentCalendar companyId={companyId} />
         </div>
     );
