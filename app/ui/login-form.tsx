@@ -14,7 +14,7 @@ import { useSearchParams } from 'next/navigation';
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+  const callbackUrl = searchParams.get('callbackUrl') || '/dashboard/account';
   const [errorMessage, formAction, isPending] = useActionState(
     authenticate,
     undefined,
@@ -26,11 +26,6 @@ export default function LoginForm() {
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>
           Please log in to continue.
         </h1>
-        <p className='text-sm text-gray-400'>This login page is just part of demostration for authentication feature.<br /><br />Use the following credentials to continue demo.</p>
-        <ul className='mt-6  mb-12 text-sm text-gray-400'>
-          <li>Email: user@digitizebox.com</li>
-          <li>Password: 123456</li>
-        </ul>
         <div className="w-full">
           <div>
             <label
