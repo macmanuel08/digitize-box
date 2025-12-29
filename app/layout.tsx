@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: '%s | DigitizeBox',
     default: 'DigitizeBox',
   },
-  description: 'The official Next.js Learn Dashboard built with App Router.',
+  description: 'Streamline medical practices by reducing administrative tasks, allowing doctors to focus more on patient care. Our solution helps healthcare providers operate efficiently without the need for multiple assistants or secretaries.',
   metadataBase: new URL('https://digitizebox.com'),
 };
 export default function RootLayout({
