@@ -1,6 +1,5 @@
 'use client';
 
-import { AppointmentForm } from '@/app/lib/definitions';
 import { UserCircleIcon, PhoneIcon, ClockIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
 import { createAppointment, AppointmentState } from '@/app/lib/actions';

@@ -5,6 +5,7 @@ import postgres from 'postgres';
 import { z } from 'zod';
 import type { User } from '@/app/lib/definitions';
 import { authConfig } from './auth.config';
+import { getUserCompanyIdByEmail, getCompanySubscriptionStatus } from '@/app/lib/data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -27,8 +28,6 @@ export const { auth, signIn, signOut } = NextAuth({
           .object({ email: z.string().email(), password: z.string().min(6) })
           .safeParse(credentials);
 
-        console.log(parsedCredentials.data)
-
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
 
@@ -36,10 +35,15 @@ export const { auth, signIn, signOut } = NextAuth({
           if (!user) return null;
 
           const passwordsMatch = await bcrypt.compare(password, user.password);
-          if (passwordsMatch) return user;
+          const companyId = await getUserCompanyIdByEmail(email);
+
+          if (passwordsMatch && companyId) {
+            const subscriptionStatus = await getCompanySubscriptionStatus(companyId);
+            if (subscriptionStatus != 'pending') return user;
+            throw new Error('AccountPending');
+          }
         }
 
-        console.log('Invalid credentials');
         return null;
       },
     }),

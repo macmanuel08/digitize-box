@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { lusitana } from '@/app/ui/fonts';
 import { notFound } from 'next/navigation';
 import { fetchBusinessBySlug } from '@/app/lib/data';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Make An Appointment',
@@ -29,7 +30,9 @@ export default async function AppointmentFormPage(props: { params: Promise<{ slu
           <h1 className={`${lusitana.className} text-2xl`}>{name} Appointment Form</h1>
           <p className="text-sm">Please fill out the form to schedule and appointment.</p>
         </div>
-        <AppointmentForm companyId={id} />
+        <Suspense>
+          <AppointmentForm companyId={id} />
+        </Suspense>
       </div>
     </main>
     

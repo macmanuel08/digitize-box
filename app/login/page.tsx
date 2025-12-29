@@ -1,5 +1,6 @@
 import DigitizeBoxLogoLetters from '@/app/ui/digitizebox-logo-letters';
 import LoginForm from '@/app/ui/login-form';
+import Link from 'next/link';
 import { Suspense } from 'react';
 
 export default function LoginPage() {
@@ -14,6 +15,10 @@ export default function LoginPage() {
         <Suspense>
           <LoginForm />
         </Suspense>
+        <div className="mt-12 border-t border-solid border-gray-300 pt-6">
+          <p className="txt-sm text-center mb-3 text-gray-600">Don't have an account?</p>
+          <Link href='/signup/company-info' className='btn btn-primary mx-auto'>Create Account</Link>
+        </div>
       </div>
     </main>
   );

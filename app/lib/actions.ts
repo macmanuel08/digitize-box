@@ -128,7 +128,9 @@ export async function authenticate(
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
-          return 'Invalid credentials.';
+          return 'Invalid credentials';
+        case 'CallbackRouteError':
+          return 'Your account is still pending. Please wait at least 24 hours for your account to be activated.'
         default:
           return 'Something went wrong.';
       }
@@ -228,8 +230,8 @@ export async function createAppointment(
     return {message: `Failed to insert appointment`};
   }
 
-  revalidatePath('/dashboard/appointment-success');
-  redirect('/dashboard/appointment/appointments-calendar');
+  revalidatePath(`/${companyId}/appointment/appointment-success`);
+  redirect(`/${companyId}/appointment/appointment-success`);
 }
 
 export async function getTakenTimeslots(date: Date): Promise<string[] | null> {

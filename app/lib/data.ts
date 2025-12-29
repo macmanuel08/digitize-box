@@ -409,3 +409,32 @@ export function formatDate(dateString: Date) {
     day: "numeric",
   });
 }
+
+export async function getCompanySubscriptionStatus(companyId: string) {
+  try {
+    const status = await sql`
+      SELECT status
+      FROM subscriptions
+      WHERE company_id = ${companyId}
+    `;
+
+    return status[0].status;
+  } catch(error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch subscription status.');
+  }
+}
+
+export async function getUserCompanyIdByEmail(email: string) {
+  try {
+    const companyId = await sql`
+      SELECT company_id
+      FROM users
+      WHERE email = ${email};
+    `;
+    return companyId[0].company_id;
+  } catch (error) {
+    console.log(`Database error: ${error}`);
+    throw new Error('Failed to fetch company id');
+  }
+}
