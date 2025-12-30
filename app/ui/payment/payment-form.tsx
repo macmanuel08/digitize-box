@@ -25,7 +25,7 @@ export default function PaymentForm(
             <h2 className={`${lusitana.className} mb-1 text-xl`}>
             Beta Mode Subscription
             </h2>
-            <p className='text-sm text-gray-600'>Get full access for only <span className="text-blue-500 font-semibold">&#8369;399 per month</span> during our <strong>Beta Mode</strong>! Be among the first to experience our platform
+            <p className='text-sm text-gray-600'>Get full access for only <span className="text-blue-500 font-semibold">&#8369;199 per month</span> during our <strong>Beta Mode</strong>! Be among the first to experience our platform
     while we fine-tune and expand its features.</p>
 
             <p className='text-sm text-gray-600 mt-4'>As a Beta subscriber, your price will stay the same — forever — even as we grow, 
