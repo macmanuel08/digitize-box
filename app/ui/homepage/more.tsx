@@ -21,7 +21,7 @@ export default function More()  {
                 </div>
                 <div className="lg:w-1/2">
                     <h2 className="font-heading text-center text-3xl font-semibold text-white">Contact us</h2>
-                    <p className="font-body text-md mt-2 text-white text-center">Send us your inquiries, suggestion, or concerns. We would like to help.</p>
+                    <p className="font-body text-md mt-2 text-white text-center">Send us your inquiries, suggestions, or concerns. We would like to help.</p>
                     <div className="mt-6">
                         <ContactForm />
                     </div>
