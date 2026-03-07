@@ -15,7 +15,7 @@ const config: Config = {
         blue: {
           400: '#2589FE',
           500: '#0047BA',
-          600: '#002E5D',
+          600: '#2563eb',
         },
       },
       borderRadius: {

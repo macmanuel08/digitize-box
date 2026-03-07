@@ -15,11 +15,15 @@
            aria-disabled:opacity-50;
   }
   .btn-primary {
-    @apply bg-blue-500
-           text-white
-           hover:bg-blue-400
-           active:bg-blue-600
-           focus-visible:outline-blue-500;
+    @apply bg-blue-600
+    hover:bg-blue-700
+    text-white
+    px-6 py-2.5
+    rounded-full
+    font-medium
+    transition
+    shadow-lg
+    shadow-blue-600/30;
   }
   .btn-primary-transparent {
     @apply 
@@ -77,3 +81,12 @@ input[type='number']::-webkit-outer-spin-button {
   0% {background-position: 0% 0%;}
   100% {background-position: 100% 100%;}
 } */
+
+.gradient-text {
+    background: linear-gradient(to right, #2563eb, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.mockup-shadow {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
