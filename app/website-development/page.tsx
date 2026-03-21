@@ -20,7 +20,7 @@ import {
         CheckCircle,
     } from 'lucide-react';
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "Web Development for Healthcare Clinics | Fast, Secure Medical Websites",
     description: "Professional web development for doctors and healthcare clinics. We build fast, secure, SEO-optimized medical websites with appointment booking and patient-friendly design.",
     keywords: [
