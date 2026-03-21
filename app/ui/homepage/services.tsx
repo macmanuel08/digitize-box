@@ -1,4 +1,5 @@
 import { LayoutTemplate, FolderHeart, CalendarClock, PieChart } from "lucide-react";
+import Link from "next/link";
 
 export default function Services() {
     return (
@@ -11,13 +12,14 @@ export default function Services() {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {/* Web Development */}
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition">
+                    <Link href="/website-development" className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition">
                         <div className="w-14 h-14 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 mb-6">
                             <LayoutTemplate className="w-7 h-7" />
                         </div>
                         <h3 className="text-xl font-bold text-slate-900 mb-3">Web Development</h3>
                         <p className="text-slate-500 text-sm leading-relaxed">Custom, professional websites tailored for medical clinics to establish a strong online presence.</p>
-                    </div>
+                        <span className="bg-indigo-600 text-white px-3 py-1 rounded-md text-xs font-bold tracking-wide uppercase mt-4 inline-block">Learn More</span>
+                    </Link>
                     {/* EHR System */}
                     <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition">
                         <div className="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-6">

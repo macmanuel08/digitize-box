@@ -22,9 +22,9 @@ export default function Header() {
                         
                         {/* Some links are hidden on mobile */}
                         <div className="flex items-center space-x-8">
-                            <Link href="#mission" className="lg:inline-block hidden text-slate-600 hover:text-blue-600 font-medium transition">Our Mission</Link>
-                            <Link href="#services" className="lg:inline-block hidden text-slate-600 hover:text-blue-600 font-medium transition">Services</Link>
-                            <Link href="#product" className="lg:inline-block hidden text-slate-600 hover:text-blue-600 font-medium transition">Scheduling System</Link>
+                            <Link href="/#mission" className="lg:inline-block hidden text-slate-600 hover:text-blue-600 font-medium transition">Our Mission</Link>
+                            <Link href="/#services" className="lg:inline-block hidden text-slate-600 hover:text-blue-600 font-medium transition">Services</Link>
+                            <Link href="/#product" className="lg:inline-block hidden text-slate-600 hover:text-blue-600 font-medium transition">Scheduling System</Link>
                             <Link href="#contact" className="btn-primary">
                                 Get Started
                             </Link>
