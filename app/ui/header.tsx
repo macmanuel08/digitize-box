@@ -25,8 +25,8 @@ export default function Header() {
                             <Link href="#mission" className="lg:inline-block hidden text-slate-600 hover:text-blue-600 font-medium transition">Our Mission</Link>
                             <Link href="#services" className="lg:inline-block hidden text-slate-600 hover:text-blue-600 font-medium transition">Services</Link>
                             <Link href="#product" className="lg:inline-block hidden text-slate-600 hover:text-blue-600 font-medium transition">Scheduling System</Link>
-                            <Link href="/signup/company-info" className="btn-primary">
-                                Register Business
+                            <Link href="#contact" className="btn-primary">
+                                Get Started
                             </Link>
                         </div>
                     </div>

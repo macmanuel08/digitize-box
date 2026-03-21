@@ -1,9 +1,12 @@
-import Header from '@/app/ui/header';
 import Hero from '@/app/ui/homepage/hero';
 import Welcome from '@/app/ui/homepage/welcome';
 import Services from '@/app/ui/homepage/services';
 import Scheduling from '@/app/ui/homepage/scheduling';
-import FormFooter from '@/app/ui/formfooter';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  	title: 'Healthcare Software Provider',
+};
 
 export default function Page() {
 	const structuredData = {
@@ -19,7 +22,7 @@ export default function Page() {
 					"name": "Philippines"
 			},
 			"sameAs": [
-				"https://www.facebook.com/digitizebox",
+				"https://www.facebook.com/digitizebox"
 			]
 			},
 			{
@@ -56,14 +59,12 @@ export default function Page() {
 				__html: JSON.stringify(structuredData),
 				}}
 			/>
-			<Header />
 			<main>
 				<Hero />
 				<Welcome />
 				<Services />
 				<Scheduling />
 			</main>
-			<FormFooter />
 		</>
 	);
 }

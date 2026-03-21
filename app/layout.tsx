@@ -1,5 +1,7 @@
 import '@/app/ui/global.css';
 import { montserrat, roboto } from '@/app/ui/fonts';
+import Header from '@/app/ui/header';
+import FormFooter from '@/app/ui/formfooter';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -30,7 +32,11 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className="scroll-smooth">
-            <body className={`text-slate-800 bg-slate-50 antialiased`}>{children}</body>
+            <body className={`text-slate-800 bg-slate-50 antialiased`}>
+                <Header />
+                {children}
+                <FormFooter />
+            </body>
         </html>
     );
 }

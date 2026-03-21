@@ -29,7 +29,7 @@ export default function FormFooter() {
                         
                         <div className="space-y-4 text-slate-400">
                             <div className="flex items-center gap-3">
-                                <Mail data-lucide="mail" className="w-5 h-5 text-blue-400" />
+                                <Mail className="w-5 h-5 text-blue-400" />
                                 <span>digitizebox@gmail.com</span>
                             </div>
                             <div className="flex items-center gap-3">
