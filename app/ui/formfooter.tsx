@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ContactForm from "@/app/ui/contact-form";
 import DigitizeBoxLogoLetters from "@/app/ui/digitizebox-logo-letters";
-import { Box, Mail, Globe } from "lucide-react";
+import { Box, Mail, Globe,Facebook } from "lucide-react";
 
 export default function FormFooter() {
     return (
@@ -30,11 +30,15 @@ export default function FormFooter() {
                         <div className="space-y-4 text-slate-400">
                             <div className="flex items-center gap-3">
                                 <Mail className="w-5 h-5 text-blue-400" />
-                                <span>digitizebox@gmail.com</span>
+                                <a href="mailto:digitizebox@gmail.com">digitizebox@gmail.com</a>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Globe className="w-5 h-5 text-blue-400" />
                                 <span>digitizebox.com</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <Facebook className="w-5 h-5 text-blue-400" />
+                                <a href="https://www.facebook.com/digitizebox" target="_blank">facebook.com/digitizebox</a>
                             </div>
                         </div>
                     </div>
