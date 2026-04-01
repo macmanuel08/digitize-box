@@ -21,13 +21,14 @@ export default function Services() {
                         <span className="bg-indigo-600 text-white px-3 py-1 rounded-md text-xs font-bold tracking-wide uppercase mt-4 inline-block absolute left-8 bottom-6">Learn More</span>
                     </Link>
                     {/* EHR System */}
-                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition relative">
+                    <Link href="/ehr-development" className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg transition relative">
                         <div className="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-6">
                             <FolderHeart className="w-7 h-7" />
                         </div>
                         <h3 className="text-xl font-bold text-slate-900 mb-3">EHR Systems</h3>
                         <p className="text-slate-500 text-sm leading-relaxed">Secure Electronic Health Records integration to manage patient data safely and efficiently.</p>
-                    </div>
+                        <span className="bg-emerald-600 text-white px-3 py-1 rounded-md text-xs font-bold tracking-wide uppercase mt-4 inline-block absolute left-8 bottom-6">Learn More</span>
+                    </Link>
                     
                     {/* Appointment Scheduling */}
                     <Link href="/appointment-scheduling" className="bg-white px-8 pt-8 pb-16 rounded-2xl shadow-sm border border-blue-100 ring-2 ring-blue-600/10 hover:shadow-lg transition relative overflow-hidden relative">

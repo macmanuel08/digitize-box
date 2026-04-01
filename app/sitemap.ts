@@ -21,6 +21,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.9,
         },
+        {
+            url: 'https://digitizebox.com/ehr-development',
+            lastModified: today,
+            changeFrequency: 'monthly',
+            priority: 0.9,
+        },
         /*
         {
             url: 'https://digitizebox.com/blog',
