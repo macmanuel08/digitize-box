@@ -51,8 +51,8 @@ export default function FormFooter() {
                 <div className="mt-16 pt-8 border-t border-slate-800 text-center text-slate-500 text-sm flex flex-col md:flex-row justify-between items-center">
                     <p>&copy; {new Date().getFullYear()} DigitizeBox. All rights reserved.</p>
                     <div className="flex space-x-6 mt-4 md:mt-0">
-                        <Link href="#" className="hover:text-white transition">Privacy Policy</Link>
-                        <Link href="#" className="hover:text-white transition">Terms of Service</Link>
+                        <Link href="/privacy-policy" className="hover:text-white transition">Privacy Policy</Link>
+                        <Link href="/terms-of-service" className="hover:text-white transition">Terms of Service</Link>
                     </div>
                 </div>
             </div>
