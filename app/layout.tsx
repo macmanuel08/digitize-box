@@ -11,6 +11,9 @@ export const metadata: Metadata = {
     },
     description: 'We build custom healthcare software for clinics and doctors in the Philippines. We develop medical websites, patient scheduling systems, Electronic Health Records (EHR) systems, and clinic dashboards. Our solutions automate administrative tasks and help healthcare providers operate efficiently without needing multiple assistants.',
     metadataBase: new URL('https://digitizebox.com'),
+    alternates: {
+        canonical: '/',
+    },
     robots: {
         index: true,
         follow: true,

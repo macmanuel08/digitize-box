@@ -27,6 +27,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.9,
         },
+        {
+            url: 'https://digitizebox.com/privacy-policy',
+            lastModified: today,
+            changeFrequency: 'yearly',
+            priority: 0.3,
+        },
+        {
+            url: 'https://digitizebox.com/terms-of-service',
+            lastModified: today,
+            changeFrequency: 'yearly',
+            priority: 0.3,
+        }
         /*
         {
             url: 'https://digitizebox.com/blog',
