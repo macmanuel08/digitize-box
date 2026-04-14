@@ -24,7 +24,7 @@ export default function Hero() {
                             Modernize your medical practice with cutting-edge tools designed to reduce administrative headaches and put patients first.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <Link href="/signup/company-info" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition shadow-xl shadow-blue-600/30 text-center flex items-center justify-center gap-2">
+                            <Link href="#contact" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition shadow-xl shadow-blue-600/30 text-center flex items-center justify-center gap-2">
                                 Register Your Business <ArrowRight />
                             </Link>
                             <Link href="#product" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-8 py-4 rounded-xl font-semibold text-lg transition text-center">
