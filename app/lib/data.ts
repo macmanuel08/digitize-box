@@ -438,3 +438,41 @@ export async function getUserCompanyIdByEmail(email: string) {
     throw new Error('Failed to fetch company id');
   }
 }
+
+export async function getAppointmentsByMonthYear(company_id: string,month: number, year: number) {
+
+
+  const startDate = `${year}-${String(month + 1).padStart(2, "0")}-01`;
+
+  const nextMonth = month === 12 ? 1 : month + 1;
+  const nextYear = month === 12 ? year + 1 : year;
+
+  const endDate =
+    month === 11
+      ? `${year + 1}-01-01`
+      : `${year}-${String(month + 2).padStart(2, "0")}-01`;
+
+  try {
+    const appointments = await sql`
+      SELECT
+        id,
+        first_name,
+        last_name,
+        email,
+        phone,
+        status,
+        appointment_time,
+        appointment_date
+      FROM appointments
+      WHERE appointment_date >= ${startDate}::date
+        AND appointment_date < ${endDate}::date
+        AND company_id = ${company_id}
+      ORDER BY appointment_date;
+    `;
+
+    return appointments;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
