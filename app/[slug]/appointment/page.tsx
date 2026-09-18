@@ -24,7 +24,7 @@ export default async function AppointmentFormPage(props: { params: Promise<{ slu
   const {id, name} = company[0];
 
   return (
-    <main className="flex items-center justify-center md:min-h-screen">
+    <main className="flex items-center justify-center md:min-h-screen py-36">
       <div className="relative mx-auto flex w-full max-w-[800px] flex-col space-y-2.5 p-4">
         <div className="text-white rounded-lg bg-blue-500 p-6 mb-1">
           <h1 className={`${lusitana.className} text-2xl`}>{name} Appointment Form</h1>
